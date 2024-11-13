@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    font-family: "Red Hat Mono", monospace;
+    font-optical-sizing: auto;
+}
