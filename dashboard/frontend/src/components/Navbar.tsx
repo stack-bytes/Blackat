@@ -1,29 +1,53 @@
-import { CatIcon } from "lucide-react";
+import {
+    Binoculars,
+    CatIcon,
+    Github,
+    LayoutDashboardIcon,
+    SlashSquareIcon,
+} from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
     return (
         <>
             <div className="navbar bg-transparent">
                 <div className="flex-1">
-                    <a className="font-black text-4xl flex flex-row items-center justify-center gap-x-4"><CatIcon width={36} height={36}/>Blackat</a>
+                    <Link to={"/"} className="font-black text-4xl flex flex-row items-center justify-center gap-x-4">
+                        <CatIcon width={36} height={36} />
+                        Blackat
+                    </Link>
                 </div>
                 <div className="flex-none">
-                    <ul className="menu menu-horizontal px-1">
+                    <ul className="flex flex-row justify-end items-center gap-x-3">
                         <li>
-                            <a>Link</a>
+                            <Link to={"/dashboard"} className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
+                                <LayoutDashboardIcon />
+                                <span className="hidden md:inline">
+                                    Dashboard
+                                </span>
+                            </Link>
                         </li>
                         <li>
-                            <details>
-                                <summary>Parent</summary>
-                                <ul className="bg-base-200 rounded-t-none p-2">
-                                    <li>
-                                        <a>Link 1</a>
-                                    </li>
-                                    <li>
-                                        <a>Link 2</a>
-                                    </li>
-                                </ul>
-                            </details>
+                            <a className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
+                                <SlashSquareIcon />
+                                <span className="hidden md:inline">
+                                    Endpoints
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <Link to="/overview" className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
+                                <Binoculars />
+                                <span className="hidden md:inline">
+                                    Overview
+                                </span>
+                            </Link>
+                        </li>
+                        <div className="w-1 h-6 bg-primary rounded-full" />
+                        <li>
+                            <a className="btn  btn-primary text-2xl font-semibold flex flex-row items-center justify-center gap-x-2">
+                                <Github />
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -32,4 +56,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar;
+export default Navbar

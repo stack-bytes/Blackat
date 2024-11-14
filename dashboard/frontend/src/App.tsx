@@ -1,11 +1,18 @@
-import DefaultLayout from "./layouts/_default-layout"
+import { Route, Router, Routes } from "react-router-dom"
+import HomePage from "./pages/HomePage"
+import DashboardPage from "./pages/DashboardPage"
+import OverviewPage from "./pages/OverviewPage"
 
 function App() {
-    return <>
-      <DefaultLayout>
-        <h1>Hello world</h1>
-      </DefaultLayout>
-    </>
+    return (
+        <>
+            <Routes>
+              <Route path="/" Component={HomePage}/>
+              <Route path="/dashboard" Component={DashboardPage}/>
+              <Route path="/overview" Component={OverviewPage}/>
+            </Routes>
+        </>
+    )
 }
 
 export default App
