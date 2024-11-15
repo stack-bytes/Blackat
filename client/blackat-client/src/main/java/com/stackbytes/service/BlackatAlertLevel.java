@@ -6,11 +6,11 @@ import lombok.Getter; /**
  */
 
 @Getter
-public enum AlertLevel{
+public enum BlackatAlertLevel {
     NONE(0) ,LOW(1), MEDIUM(2), HIGH(3), ULTRA(4);
 
     private Integer level;
-    private AlertLevel(int level) {
+    private BlackatAlertLevel(int level) {
         this.level = level;
     }
 

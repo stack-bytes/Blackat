@@ -5,6 +5,6 @@ package com.stackbytes.abstracts;
  */
 
 // TODO: might wanna have return types in the future for custom alert stack-trace
-public abstract class Alert {
+public abstract class BlackatAlert {
     public abstract void emmit(String params);
 }

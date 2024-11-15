@@ -1,7 +1,6 @@
 package com.stackbytes.service;
 
-import com.stackbytes.model.RunningContext;
-import org.apache.tomcat.util.http.parser.Host;
+import com.stackbytes.model.BlackatRunningContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -52,29 +51,29 @@ public class BlackatClientService {
     @Value("${spring.application.name}")
     private String applicationName = null;
 
-    public RunningContext getRunningContext(){
+    public BlackatRunningContext getRunningContext(){
         System.out.println(applicationContext.getApplicationName());
 
 
-        RunningContext runningContext = RunningContext.builder()
+        BlackatRunningContext blackatRunningContext = BlackatRunningContext.builder()
                 .serviceName(Optional.ofNullable(applicationName).orElse("blackat-service"))
                 .port(webServerContext.getWebServer().getPort())
                 .host(this.getHostOrFallback())
                 .build();
 
 
-        return runningContext;
+        return blackatRunningContext;
     }
 
     // TODO: Report to monitoring system!
 
     private String getHostOrFallback(){
         try{
-            alertSystem.run(AlertLevel.HIGH, "IP address Ok");
+            alertSystem.run(BlackatAlertLevel.HIGH, "IP address Ok");
             return Inet4Address.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             System.out.println(e.getMessage());
-            alertSystem.run(AlertLevel.MEDIUM, "No ip address found");
+            alertSystem.run(BlackatAlertLevel.MEDIUM, "No ip address found");
             return "No IP";
         }
     }

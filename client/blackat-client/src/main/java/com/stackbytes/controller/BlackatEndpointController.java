@@ -1,6 +1,6 @@
 package com.stackbytes.controller;
 
-import com.stackbytes.model.RunningContext;
+import com.stackbytes.model.BlackatRunningContext;
 import com.stackbytes.service.BlackatClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,7 @@ public class BlackatEndpointController {
     }
 
     @GetMapping("context")
-    public ResponseEntity<RunningContext> contextCheck(){
+    public ResponseEntity<BlackatRunningContext> contextCheck(){
         return ResponseEntity.ok(blackatClientService.getRunningContext());
     }
 

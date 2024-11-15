@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RunningContext {
+public class BlackatRunningContext {
     private String serviceName;
     private Integer port;
     private String host;
