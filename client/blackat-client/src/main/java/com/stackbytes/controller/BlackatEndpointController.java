@@ -1,5 +1,8 @@
 package com.stackbytes.controller;
 
+import com.stackbytes.model.RunningContext;
+import com.stackbytes.service.BlackatClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/blackat")
 public class BlackatEndpointController {
 
+
+    private final BlackatClientService blackatClientService;
+
+    @Autowired
+    BlackatEndpointController(BlackatClientService blackatClientService) {
+        this.blackatClientService = blackatClientService;
+    }
+
     @GetMapping("sanity")
     public ResponseEntity<Boolean> sanityCheck(){
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping
+    public ResponseEntity<RunningContext> contextCheck(){
+        return ResponseEntity.ok(blackatClientService.getRunningContext());
     }
 
 }
