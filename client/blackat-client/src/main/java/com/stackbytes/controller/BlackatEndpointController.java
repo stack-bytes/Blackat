@@ -25,9 +25,14 @@ public class BlackatEndpointController {
         return ResponseEntity.ok(true);
     }
 
-    @GetMapping
+    @GetMapping("context")
     public ResponseEntity<RunningContext> contextCheck(){
         return ResponseEntity.ok(blackatClientService.getRunningContext());
+    }
+
+    @GetMapping("alert-trace")
+    public ResponseEntity<String> alertTraceCheck(){
+        return ResponseEntity.ok("To be implemented!");
     }
 
 }
