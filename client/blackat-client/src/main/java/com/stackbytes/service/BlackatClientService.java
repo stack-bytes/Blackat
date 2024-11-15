@@ -26,11 +26,13 @@ public class BlackatClientService {
 
     private final ApplicationContext applicationContext;
     private final ServletWebServerApplicationContext webServerContext;
+    private final BlackatAlertSystem alertSystem;
 
     @Autowired
-    BlackatClientService(ApplicationContext applicationContext, ServletWebServerApplicationContext servletWebServerApplicationContext) {
+    BlackatClientService(ApplicationContext applicationContext, ServletWebServerApplicationContext servletWebServerApplicationContext, BlackatAlertSystem alertSystem) {
         this.applicationContext =  applicationContext;
         this.webServerContext = servletWebServerApplicationContext;
+        this.alertSystem = alertSystem;
     }
 
 
@@ -68,10 +70,12 @@ public class BlackatClientService {
 
     private String getHostOrFallback(){
         try{
+            alertSystem.run(AlertLevel.HIGH, "IP address Ok");
             return Inet4Address.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             System.out.println(e.getMessage());
-            return "no ip address found";
+            alertSystem.run(AlertLevel.MEDIUM, "No ip address found");
+            return "No IP";
         }
     }
 
