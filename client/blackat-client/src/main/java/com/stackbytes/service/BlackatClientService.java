@@ -2,9 +2,7 @@ package com.stackbytes.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -17,21 +15,22 @@ import java.util.Map;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON) //Explicit singleton instancing
-public class EndpointScanner {
+public class BlackatClientService {
 
-    private final RequestMappingHandlerMapping requestMappingHandlerMapping;
+    private final ApplicationContext applicationContext;
 
     @Autowired
-    EndpointScanner(RequestMappingHandlerMapping requestMappingHandlerMapping) {
-        this.requestMappingHandlerMapping = requestMappingHandlerMapping;
+    BlackatClientService(ApplicationContext applicationContext) {
+        this.applicationContext =  applicationContext;
     }
 
 
     public List<String> scanEndpoints(){
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
 
         List<String> enpoints = new ArrayList<>();
-        handlerMethods.forEach((key, value) -> enpoints.add(value.getMethod().getAnnotatedReturnType().toString()));
+        handlerMethods.forEach((key, value) -> enpoints.add(value.getMethod().getName()));
 
         return enpoints;
     }

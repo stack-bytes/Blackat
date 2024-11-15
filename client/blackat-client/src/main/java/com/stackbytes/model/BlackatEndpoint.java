@@ -1,5 +1,5 @@
 package com.stackbytes.model;
 
 
-public class Endpoint {
+public class BlackatEndpoint {
 }
