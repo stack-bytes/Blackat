@@ -7,9 +7,9 @@ function App() {
     return (
         <>
             <Routes>
-              <Route path="/" Component={HomePage}/>
-              <Route path="/dashboard" Component={DashboardPage}/>
-              <Route path="/overview" Component={OverviewPage}/>
+                <Route path="/" Component={HomePage} />
+                <Route path="/dashboard" Component={DashboardPage} />
+                <Route path="/overview" Component={OverviewPage} />
             </Routes>
         </>
     )

@@ -20,7 +20,7 @@ public class BlackatAlertSystem{
     /*
     Only display the current alert if it's severity is under the general reportable severity level
      */
-    protected void run(BlackatAlertLevel currentBlackatAlertLevel, String alertText) {
+    public void run(BlackatAlertLevel currentBlackatAlertLevel, String alertText) {
         if(currentBlackatAlertLevel.getLevel() <= globalBlackatAlertLevel.getLevel()){
            this.globalBlackatAlert.emmit(alertText);
         }

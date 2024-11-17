@@ -12,7 +12,10 @@ const Navbar = () => {
         <>
             <div className="navbar bg-transparent">
                 <div className="flex-1">
-                    <Link to={"/"} className="font-black text-4xl flex flex-row items-center justify-center gap-x-4">
+                    <Link
+                        to={"/"}
+                        className="font-black text-4xl flex flex-row items-center justify-center gap-x-4"
+                    >
                         <CatIcon width={36} height={36} />
                         Blackat
                     </Link>
@@ -20,7 +23,10 @@ const Navbar = () => {
                 <div className="flex-none">
                     <ul className="flex flex-row justify-end items-center gap-x-3">
                         <li>
-                            <Link to={"/dashboard"} className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
+                            <Link
+                                to={"/dashboard"}
+                                className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2"
+                            >
                                 <LayoutDashboardIcon />
                                 <span className="hidden md:inline">
                                     Dashboard
@@ -36,7 +42,10 @@ const Navbar = () => {
                             </a>
                         </li>
                         <li>
-                            <Link to="/overview" className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
+                            <Link
+                                to="/overview"
+                                className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2"
+                            >
                                 <Binoculars />
                                 <span className="hidden md:inline">
                                     Overview
