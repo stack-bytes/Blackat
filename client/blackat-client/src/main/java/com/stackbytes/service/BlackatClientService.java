@@ -56,13 +56,12 @@ public class BlackatClientService {
     private String clientPort;
 
     public BlackatContext getRunningContext(){
-        if(clientPort == null || clientPort.isEmpty()){
-            clientPort = "8080";
-        }
+
+
 
         BlackatContext blackatContext = BlackatContext.builder()
-                .serviceName(Optional.ofNullable(applicationName).orElse("blackat-service"))
-                .port(Integer.parseInt(clientPort))
+                .serviceName(Optional.of(applicationName).orElse("blackat-service"))
+                .port(Optional.of(Integer.parseInt(clientPort)).orElse(Integer.parseInt(clientPort)))
                 .host(this.getHostOrFallback())
                 .build();
 

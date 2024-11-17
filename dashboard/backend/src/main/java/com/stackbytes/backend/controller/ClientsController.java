@@ -21,7 +21,8 @@ public class ClientsController {
     @CrossOrigin
     @PostMapping("register")
     public ResponseEntity<RegisterClientResponseDto> registerClientContext(@RequestBody RegisterClientRequestDto registerClientRequestDto) {
-        clientsService.registerClientContext(registerClientRequestDto);
+        //clientsService.registerClientContext(registerClientRequestDto);
+        System.out.println("RegisterClientRequestDto: " + registerClientRequestDto.getHost());
         return ResponseEntity.ok(new RegisterClientResponseDto("Client succesfully registered"));
     }
 

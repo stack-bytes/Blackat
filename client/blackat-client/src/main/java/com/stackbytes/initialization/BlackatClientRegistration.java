@@ -62,12 +62,12 @@ public class BlackatClientRegistration {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             BlackatContext serviceContext = blackatClientService.getRunningContext();
-            System.out.println(objectMapper.writeValueAsString(serviceContext));
 
-            String jsonPayload = objectMapper.writeValueAsString("");
+            String jsonPayload = objectMapper.writeValueAsString(serviceContext);
+
 
             HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
-            restTemplate.postForObject(registerClientUrl, entity, String.class);
+            restTemplate.postForEntity(registerClientUrl, entity, String.class);
         } catch (Exception e) {
             blackatAlertSystem.run(BlackatAlertLevel.LOW, String.format("Could not register client <%s> to dashboard due to connection issues: %s", applicationName, e.getMessage()));
         }
