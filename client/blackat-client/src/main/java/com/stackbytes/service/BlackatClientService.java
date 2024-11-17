@@ -1,6 +1,6 @@
 package com.stackbytes.service;
 
-import com.stackbytes.model.BlackatRunningContext;
+import com.stackbytes.model.BlackatContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -51,18 +51,18 @@ public class BlackatClientService {
     @Value("${spring.application.name}")
     private String applicationName = null;
 
-    public BlackatRunningContext getRunningContext(){
+    public BlackatContext getRunningContext(){
         System.out.println(applicationContext.getApplicationName());
 
 
-        BlackatRunningContext blackatRunningContext = BlackatRunningContext.builder()
+        BlackatContext blackatContext = BlackatContext.builder()
                 .serviceName(Optional.ofNullable(applicationName).orElse("blackat-service"))
                 .port(webServerContext.getWebServer().getPort())
                 .host(this.getHostOrFallback())
                 .build();
 
 
-        return blackatRunningContext;
+        return blackatContext;
     }
 
     // TODO: Report to monitoring system!
