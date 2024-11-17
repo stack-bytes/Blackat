@@ -37,6 +37,8 @@ public class BlackatClientRegistration {
     @Value("${blackat.server.port}")
     private Integer dashboardPort;
 
+
+
     @Autowired
     public BlackatClientRegistration(RestTemplate restTemplate, BlackatAlertSystem blackatAlertSystem, ObjectMapper objectMapper, BlackatClientService blackatClientService) {
         this.restTemplate = restTemplate;
@@ -60,6 +62,7 @@ public class BlackatClientRegistration {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             BlackatContext serviceContext = blackatClientService.getRunningContext();
+            System.out.println(objectMapper.writeValueAsString(serviceContext));
 
             String jsonPayload = objectMapper.writeValueAsString("");
 
