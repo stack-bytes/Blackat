@@ -1,8 +1,10 @@
 package com.stackbytes.backend.model.dto;
 
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
+import lombok.Data;
+
+
+@Data
 public class RegisterClientResponseDto {
     private String id;
 }

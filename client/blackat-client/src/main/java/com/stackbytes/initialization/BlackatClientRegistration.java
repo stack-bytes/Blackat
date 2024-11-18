@@ -68,6 +68,7 @@ public class BlackatClientRegistration {
 
             HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
             restTemplate.postForEntity(registerClientUrl, entity, String.class);
+            blackatAlertSystem.run(BlackatAlertLevel.MEDIUM, String.format("Client <%s> successfully registered with the server", applicationName));
         } catch (Exception e) {
             blackatAlertSystem.run(BlackatAlertLevel.LOW, String.format("Could not register client <%s> to dashboard due to connection issues: %s", applicationName, e.getMessage()));
         }
