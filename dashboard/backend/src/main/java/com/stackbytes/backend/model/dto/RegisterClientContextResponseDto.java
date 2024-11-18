@@ -1,10 +1,12 @@
 package com.stackbytes.backend.model.dto;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 
 @Data
-public class RegisterClientResponseDto {
+@Builder
+public class RegisterClientContextResponseDto {
     private String id;
 }
