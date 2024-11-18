@@ -1,12 +1,13 @@
-package com.stackbytes.model;
+package com.stackbytes.model.dto;
 
+import com.stackbytes.model.BlackatEndpoint;
 import lombok.Data;
 
 import java.util.List;
 import java.util.Map;
 
 @Data
-public class BlackatClient {
+public class BlackatClientContextRequestDto {
     private String name;
     private String description;
     private String version;

@@ -6,6 +6,9 @@ import com.stackbytes.backend.model.dto.RegisterClientContextResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.UnknownHostException;
+import java.util.List;
+
 @Service
 public class ClientsService {
 
@@ -16,7 +19,7 @@ public class ClientsService {
         this.serviceRegistry = serviceRegistry;
     }
 
-    public RegisterClientContextResponseDto registerClientContext(RegisterClientContextRequestDto registerClientContextRequestDto) {
+    public RegisterClientContextResponseDto registerClientContext(RegisterClientContextRequestDto registerClientContextRequestDto) throws UnknownHostException {
 
         RegisterClientContextResponseDto registerClientContextResponseDto = RegisterClientContextResponseDto.builder()
                         .id(serviceRegistry.registerClient(registerClientContextRequestDto))
@@ -24,5 +27,9 @@ public class ClientsService {
 
 
         return registerClientContextResponseDto;
+    }
+
+    public RegisterClientContextRequestDto getClientsContext() {
+        return null;
     }
 }

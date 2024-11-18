@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.UnknownHostException;
+
 @RestController
 @RequestMapping("/")
 public class ClientsController {
@@ -20,7 +22,7 @@ public class ClientsController {
 
     @CrossOrigin
     @PostMapping("register")
-    public ResponseEntity<RegisterClientContextResponseDto> registerClientContext(@RequestBody RegisterClientContextRequestDto registerClientContextRequestDto) {
+    public ResponseEntity<RegisterClientContextResponseDto> registerClientContext(@RequestBody RegisterClientContextRequestDto registerClientContextRequestDto) throws UnknownHostException {
         return ResponseEntity.ok(clientsService.registerClientContext(registerClientContextRequestDto));
     }
 
