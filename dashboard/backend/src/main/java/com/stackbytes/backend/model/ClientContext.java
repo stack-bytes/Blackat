@@ -11,6 +11,7 @@ public class ClientContext  {
     private String serviceName;
     private Integer port;
     private String host;
-    private final Boolean sameIp;
+    private Boolean sameIp;
+    private String blackatUrl;
 
 }

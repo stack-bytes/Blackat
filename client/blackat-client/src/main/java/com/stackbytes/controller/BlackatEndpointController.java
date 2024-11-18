@@ -20,6 +20,11 @@ public class BlackatEndpointController {
         this.blackatClientService = blackatClientService;
     }
 
+    @GetMapping("/")
+    public ResponseEntity<String> blackat(){
+        return ResponseEntity.ok("Blackat up and running");
+    }
+
     @GetMapping("sanity")
     public ResponseEntity<Boolean> sanityCheck(){
         return ResponseEntity.ok(true);

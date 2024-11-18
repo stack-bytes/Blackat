@@ -4,21 +4,31 @@ import com.stackbytes.backend.model.Client;
 import com.stackbytes.backend.model.ClientContext;
 import com.stackbytes.backend.model.Endpoint;
 import com.stackbytes.backend.model.dto.RegisterClientContextRequestDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class ServiceRegistry {
     private HashMap<String, Client> registeredClients = new HashMap<>();
 
+
+    private final RestTemplate restTemplate;
+
+    public ServiceRegistry(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+
     public String registerClient(RegisterClientContextRequestDto registerClientContextRequestDto) throws UnknownHostException {
 
         //TODO: validation logic
+        //TODO: dockerized logic
 
         String key = UUID.randomUUID().toString();
         Client client = Client.builder()
@@ -26,9 +36,11 @@ public class ServiceRegistry {
                         registerClientContextRequestDto.getServiceName(),
                         registerClientContextRequestDto.getPort(),
                         registerClientContextRequestDto.getHost(),
-                        Inet4Address.getLocalHost().getHostAddress().equals(registerClientContextRequestDto.getHost())
-                ))
-                .build();
+                        Inet4Address.getLocalHost().getHostAddress().equals(registerClientContextRequestDto.getHost()),
+                        String.format("http://%s:%d/blackat/", registerClientContextRequestDto.getHost(), registerClientContextRequestDto.getPort())
+                        )
+                ).build();
+
 
         registeredClients.put(key, client);
 
@@ -53,5 +65,27 @@ public class ServiceRegistry {
         }
     }
 
+    public void sanityEvict(){
+        for (Iterator<Map.Entry<String, Client>> iterator = registeredClients.entrySet().iterator(); iterator.hasNext();) {
+            Map.Entry<String, Client> entry = iterator.next();
+            Client client = entry.getValue();
+            try {
+                restTemplate.getForObject(String.format("%s/sanity", client.getContext().getBlackatUrl()), Boolean.class);
+            } catch (Exception e) {
+                iterator.remove();
+            }
+        }
+    }
 
+
+    public List<ClientContext> getClientContexts() {
+        sanityEvict();
+
+        List<ClientContext> clientContexts = new ArrayList<>();
+        for(Client client : registeredClients.values()) {
+            clientContexts.add(client.getContext());
+        }
+
+        return clientContexts;
+    }
 }

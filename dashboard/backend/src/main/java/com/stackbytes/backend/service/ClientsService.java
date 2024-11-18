@@ -1,6 +1,7 @@
 package com.stackbytes.backend.service;
 
 import com.stackbytes.backend.components.ServiceRegistry;
+import com.stackbytes.backend.model.ClientContext;
 import com.stackbytes.backend.model.dto.RegisterClientContextRequestDto;
 import com.stackbytes.backend.model.dto.RegisterClientContextResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ClientsService {
         return registerClientContextResponseDto;
     }
 
-    public RegisterClientContextRequestDto getClientsContext() {
-        return null;
+    public List<ClientContext> getClientsContext() {
+        return serviceRegistry.getClientContexts();
     }
 }
