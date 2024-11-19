@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.UnknownHostException;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/clients")
 public class ClientsController {
 
     private final ClientsService clientsService;

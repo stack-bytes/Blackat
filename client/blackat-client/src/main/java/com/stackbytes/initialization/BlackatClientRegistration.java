@@ -61,7 +61,7 @@ public class BlackatClientRegistration {
 
         if(blackatClientVariables.getId() != null) return;
 
-        String registerClientUrl = String.format("http://%s:%d/register", dashboardConnectionString, dashboardPort);
+        String registerClientUrl = String.format("http://%s:%d/clients/register", dashboardConnectionString, dashboardPort);
 
 
         //TODO:Tidy up

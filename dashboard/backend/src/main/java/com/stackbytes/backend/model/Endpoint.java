@@ -13,8 +13,4 @@ public class Endpoint {
     private String method;
     private String summary;
     private String url;
-
-    private String jsonFormat;
-
-    private Map<Integer, String> responseCodes;
 }

@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @Data
 public class ClientContext  {
+    private String clientId;
     private String serviceName;
     private Integer port;
     private String host;

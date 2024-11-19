@@ -33,13 +33,16 @@ public class ServiceRegistry {
         String key = UUID.randomUUID().toString();
         Client client = Client.builder()
                 .context(new ClientContext(
+                        key,
                         registerClientContextRequestDto.getServiceName(),
                         registerClientContextRequestDto.getPort(),
                         registerClientContextRequestDto.getHost(),
                         Inet4Address.getLocalHost().getHostAddress().equals(registerClientContextRequestDto.getHost()),
                         String.format("http://%s:%d/blackat/", registerClientContextRequestDto.getHost(), registerClientContextRequestDto.getPort())
                         )
-                ).build();
+                )
+                .clientId(key)
+                .build();
 
 
         registeredClients.put(key, client);

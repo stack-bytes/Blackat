@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class Client {
+    private String clientId;
     private ClientContext context;
     private List<Endpoint> endpoints;
 }

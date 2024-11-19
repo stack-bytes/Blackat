@@ -1,6 +1,9 @@
 package com.stackbytes.service;
 
+import com.stackbytes.config.BlackatClientVariables;
 import com.stackbytes.model.BlackatContext;
+import com.stackbytes.model.BlackatEndpoint;
+import jakarta.websocket.Endpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.prefs.BackingStoreException;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON) //Explicit singleton instancing
@@ -26,25 +30,17 @@ public class BlackatClientService {
 
     private final ApplicationContext applicationContext;
     private final BlackatAlertSystem alertSystem;
+    private final BlackatClientVariables blackatClientVariables;
 
 
 
     @Autowired
-    BlackatClientService(ApplicationContext applicationContext, ServletWebServerApplicationContext servletWebServerApplicationContext, BlackatAlertSystem alertSystem, Environment environment) {
+    BlackatClientService(ApplicationContext applicationContext, ServletWebServerApplicationContext servletWebServerApplicationContext, BlackatAlertSystem alertSystem, Environment environment, BlackatClientVariables blackatClientVariables) {
         this.applicationContext =  applicationContext;
         this.alertSystem = alertSystem;
+        this.blackatClientVariables = blackatClientVariables;
     }
 
-
-    public List<String> scanEndpoints(){
-        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
-        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-
-        List<String> enpoints = new ArrayList<>();
-        handlerMethods.forEach((key, value) -> enpoints.add(value.getMethod().getName()));
-
-        return enpoints;
-    }
 
     /*
         NOTE: When being imported in the project, if it doesn't find a name it will fallback on its own application.properties
@@ -83,6 +79,36 @@ public class BlackatClientService {
     }
 
 
+    public List<BlackatEndpoint> getEndpoints(String clientId) {
+
+        if(!blackatClientVariables.getId().equals(clientId)){
+            return null;
+        }
+
+        List<BlackatEndpoint> endpoints = new ArrayList<>();
+        RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
 
 
+        for(Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()){
+            String name =entry.getValue().getMethod().getName();
+            String path = entry.getKey().getDirectPaths().toString().substring(1, entry.getKey().getDirectPaths().toString().length() - 1);
+            String method = entry.getKey().getMethodsCondition().getMethods().toString().substring(1, entry.getKey().getMethodsCondition().getMethods().toString().length() - 1);
+
+            assert name.isEmpty() || path.isEmpty() || method.isEmpty();
+
+            BlackatEndpoint endpoint = BlackatEndpoint.builder()
+                    .url(path)
+                    .method(method)
+                    .name(name)
+                    .build();
+
+            endpoints.add(endpoint);
+
+        }
+
+
+        return endpoints;
+
+    }
 }

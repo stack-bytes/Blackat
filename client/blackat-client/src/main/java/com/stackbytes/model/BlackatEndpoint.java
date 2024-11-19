@@ -1,17 +1,17 @@
 package com.stackbytes.model;
 
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Map;
 
+//TODO: minimal endpoint, will expand in the future
+
+@Builder
 @Data
 public class BlackatEndpoint {
     private String method;
-    private String summary;
+    private String name;
     private String url;
-
-    private String jsonFormat;
-
-    private Map<Integer, String> responseCodes;
 }
