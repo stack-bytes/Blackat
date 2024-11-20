@@ -13,6 +13,6 @@ public class ClientContext  {
     private Integer port;
     private String host;
     private Boolean sameIp;
-    private String blackatUrl;
+    private String url;
 
 }

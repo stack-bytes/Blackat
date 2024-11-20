@@ -11,6 +11,6 @@ import java.util.Map;
 @Data
 public class Endpoint {
     private String method;
-    private String summary;
+    private String name;
     private String url;
 }

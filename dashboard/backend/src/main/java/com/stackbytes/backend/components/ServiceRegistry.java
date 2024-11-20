@@ -38,22 +38,23 @@ public class ServiceRegistry {
                         registerClientContextRequestDto.getPort(),
                         registerClientContextRequestDto.getHost(),
                         Inet4Address.getLocalHost().getHostAddress().equals(registerClientContextRequestDto.getHost()),
-                        String.format("http://%s:%d/blackat/", registerClientContextRequestDto.getHost(), registerClientContextRequestDto.getPort())
+                        String.format("http://%s:%d", registerClientContextRequestDto.getHost(), registerClientContextRequestDto.getPort())
                         )
                 )
                 .clientId(key)
+                .endpoints(new ArrayList<>())
                 .build();
 
 
         registeredClients.put(key, client);
 
-        printRegistry();
         return key;
     }
 
     public boolean addClientInfo(String clientId,  List<Endpoint> endpoints){
         if(!registeredClients.containsKey(clientId))
             return false;
+
 
         registeredClients.get(clientId).getEndpoints().addAll(endpoints);
 
@@ -68,12 +69,18 @@ public class ServiceRegistry {
         }
     }
 
+    public List<Endpoint> getEndpointsForClient(String clientId){
+        return registeredClients.get(clientId).getEndpoints();
+    }
+
+
+
     public void sanityEvict(){
         for (Iterator<Map.Entry<String, Client>> iterator = registeredClients.entrySet().iterator(); iterator.hasNext();) {
             Map.Entry<String, Client> entry = iterator.next();
             Client client = entry.getValue();
             try {
-                restTemplate.getForObject(String.format("%s/sanity", client.getContext().getBlackatUrl()), Boolean.class);
+                restTemplate.getForObject(String.format("%s/blackat/sanity", client.getContext().getUrl()), Boolean.class);
             } catch (Exception e) {
                 iterator.remove();
             }
@@ -82,7 +89,7 @@ public class ServiceRegistry {
 
 
     public List<ClientContext> getClientContexts() {
-        sanityEvict();
+
 
         List<ClientContext> clientContexts = new ArrayList<>();
         for(Client client : registeredClients.values()) {
@@ -90,5 +97,14 @@ public class ServiceRegistry {
         }
 
         return clientContexts;
+    }
+
+    public List<Client> getAllClients() {
+        sanityEvict();
+
+        if(registeredClients.isEmpty()) {return null;}
+        List<Client> clients = new ArrayList<>(registeredClients.values());
+
+        return clients;
     }
 }

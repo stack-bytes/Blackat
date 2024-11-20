@@ -1,9 +1,11 @@
 package com.stackbytes.initialization;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stackbytes.config.BlackatClientRegistryRestTemplate;
 import com.stackbytes.config.BlackatClientVariables;
 import com.stackbytes.model.BlackatContext;
+import com.stackbytes.model.BlackatEndpoint;
 import com.stackbytes.model.dto.RegisterClientContextResponseDto;
 import com.stackbytes.service.BlackatAlertLevel;
 import com.stackbytes.service.BlackatAlertSystem;
@@ -23,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOError;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.List;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
@@ -54,6 +57,27 @@ public class BlackatClientRegistration {
 
     @Value("${spring.application.name}")
     private String applicationName;
+
+    private void sendClientMethods(String clientId) throws JsonProcessingException {
+        String postClientMethodsUrl = String.format("http://%s:%d/clients/context?clientId=%s", dashboardConnectionString, dashboardPort, clientId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        List<BlackatEndpoint> endpoints = blackatClientService.getEndpoints(clientId);
+
+        String jsonPayload = objectMapper.writeValueAsString(endpoints);
+
+
+
+        HttpEntity<String> entity = new HttpEntity<>(jsonPayload, headers);
+
+        ResponseEntity<String> jsonStringResponseEntity = restTemplate.postForEntity(
+                postClientMethodsUrl,
+                entity,
+                String.class
+        );
+    }
 
     @Bean
     private void registerClientWithDashboard() {
@@ -89,6 +113,8 @@ public class BlackatClientRegistration {
             RegisterClientContextResponseDto  registerClientContextResponseDto = objectMapper.readValue(jsonStringResponseEntity.getBody(), RegisterClientContextResponseDto.class);
 
             blackatClientVariables.setId(registerClientContextResponseDto.getId());
+
+            sendClientMethods(blackatClientVariables.getId());
         } catch (Exception e) {
             blackatAlertSystem.run(BlackatAlertLevel.LOW, String.format("Could not register client <%s> to dashboard due error: %s", applicationName, e.getMessage()));
         }

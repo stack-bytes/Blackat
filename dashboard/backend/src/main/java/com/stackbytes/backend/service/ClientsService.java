@@ -1,7 +1,9 @@
 package com.stackbytes.backend.service;
 
 import com.stackbytes.backend.components.ServiceRegistry;
+import com.stackbytes.backend.model.Client;
 import com.stackbytes.backend.model.ClientContext;
+import com.stackbytes.backend.model.Endpoint;
 import com.stackbytes.backend.model.dto.RegisterClientContextRequestDto;
 import com.stackbytes.backend.model.dto.RegisterClientContextResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,17 @@ public class ClientsService {
 
     public List<ClientContext> getClientsContext() {
         return serviceRegistry.getClientContexts();
+    }
+
+    public Boolean addMethodsToClient(String clientId, List<Endpoint> endpoints) {
+        return serviceRegistry.addClientInfo(clientId, endpoints);
+    }
+
+    public List<Endpoint> getClientEndpoints(String clientId) {
+        return serviceRegistry.getEndpointsForClient(clientId);
+    }
+
+    public List<Client> getClients() {
+        return serviceRegistry.getAllClients();
     }
 }

@@ -8,7 +8,7 @@ const DashboardClientContextComponent: React.FC<DashboardClientContext> = ({
     port,
     host,
     sameIp,
-    blackatUrl,
+    url,
 }) => {
     return(
         <div className="relative w-64 h-64 bg-neutral-800 rounded-lg flex flex-col items-center justify-center">
@@ -25,7 +25,7 @@ const DashboardClientContextComponent: React.FC<DashboardClientContext> = ({
             <button className="absolute bottom-2 left-2 w-14 h-14 rounded-md btn btn-primary flex flex-row items-center justify-center">
                 <SlashSquareIcon/>
             </button>
-            <a href={blackatUrl} className="absolute bottom-2 right-2 w-14 h-14 rounded-md btn btn-primary flex flex-row items-center justify-center">
+            <a href={url} className="absolute bottom-2 right-2 w-14 h-14 rounded-md btn btn-primary flex flex-row items-center justify-center">
                 <CatIcon/>
             </a>
         </div>

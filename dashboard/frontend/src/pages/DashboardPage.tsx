@@ -10,7 +10,7 @@ export interface DashboardClientContext {
     port: number,
     host: string,
     sameIp: boolean,
-    blackatUrl: string,
+    url: string,
 }
 
 
@@ -48,7 +48,7 @@ const DashboardPage: React.FC = () => {
                 {
                     dashboardClientContexts.length > 0 ? 
                     dashboardClientContexts.map((c, k) => (
-                        <DashboardClientContextComponent blackatUrl={c.blackatUrl} clientId={c.clientId} host={c.host} port={c.port} sameIp={c.sameIp} serviceName={c.serviceName} key={k}/>
+                        <DashboardClientContextComponent url={c.url} clientId={c.clientId} host={c.host} port={c.port} sameIp={c.sameIp} serviceName={c.serviceName} key={k}/>
                     ))
                     :
                     <div className="w-full h-64 flex flex-row items-center justify-center">
