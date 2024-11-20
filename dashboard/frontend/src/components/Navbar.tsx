@@ -14,10 +14,10 @@ const Navbar = () => {
                 <div className="flex-1">
                     <Link
                         to={"/"}
-                        className="font-black text-4xl flex flex-row items-center justify-center gap-x-4"
+                        className="font-black text-4xl flex flex-row items-center justify-center gap-x-4 "
                     >
                         <CatIcon width={36} height={36} />
-                        Blackat
+                        <h1 className="hidden md:inline">Blackat</h1>
                     </Link>
                 </div>
                 <div className="flex-none">
