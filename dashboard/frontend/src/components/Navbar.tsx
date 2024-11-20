@@ -34,12 +34,12 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li>
-                            <a className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
+                            <Link to={"/endpoints"} className="btn btn-primary text-2xl font-semibold flex flex-row items-center gap-x-2">
                                 <SlashSquareIcon />
                                 <span className="hidden md:inline">
                                     Endpoints
                                 </span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <Link
