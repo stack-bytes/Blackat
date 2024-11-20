@@ -87,7 +87,7 @@ public class BlackatClientRegistration {
 
 
             RegisterClientContextResponseDto  registerClientContextResponseDto = objectMapper.readValue(jsonStringResponseEntity.getBody(), RegisterClientContextResponseDto.class);
-1
+
             blackatClientVariables.setId(registerClientContextResponseDto.getId());
         } catch (Exception e) {
             blackatAlertSystem.run(BlackatAlertLevel.LOW, String.format("Could not register client <%s> to dashboard due error: %s", applicationName, e.getMessage()));
