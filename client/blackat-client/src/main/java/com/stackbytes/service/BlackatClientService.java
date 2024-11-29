@@ -3,6 +3,7 @@ package com.stackbytes.service;
 import com.stackbytes.config.BlackatClientVariables;
 import com.stackbytes.model.BlackatContext;
 import com.stackbytes.model.BlackatEndpoint;
+import com.stackbytes.model.Param;
 import jakarta.websocket.Endpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +17,10 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import java.lang.reflect.Parameter;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.prefs.BackingStoreException;
 
 @Component
@@ -91,9 +90,23 @@ public class BlackatClientService {
 
 
         for(Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()){
-            String name =entry.getValue().getMethod().getName();
-            String path = entry.getKey().getDirectPaths().toString().substring(1, entry.getKey().getDirectPaths().toString().length() - 1);
-            String method = entry.getKey().getMethodsCondition().getMethods().toString().substring(1, entry.getKey().getMethodsCondition().getMethods().toString().length() - 1);
+
+            RequestMappingInfo requestMappingInfo = entry.getKey();
+            HandlerMethod handlerMethod = entry.getValue();
+
+            String name = handlerMethod.getMethod().getName();
+
+
+            List<Param> params = Arrays.stream(handlerMethod.getMethod().getParameters())
+                    .map(p -> new Param(p.getName(), p.getType().getSimpleName()))
+                    .toList();
+
+
+
+            String path = requestMappingInfo.getDirectPaths().toString().substring(1, entry.getKey().getDirectPaths().toString().length() - 1);
+            String method = requestMappingInfo.getMethodsCondition().getMethods().toString().substring(1, entry.getKey().getMethodsCondition().getMethods().toString().length() - 1);
+
+
 
             assert name.isEmpty() || path.isEmpty() || method.isEmpty();
 
@@ -101,6 +114,7 @@ public class BlackatClientService {
                     .url(path)
                     .method(method)
                     .name(name)
+                    .parameters(params)
                     .build();
 
             endpoints.add(endpoint);

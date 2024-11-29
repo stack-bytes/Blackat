@@ -25,7 +25,7 @@ const DashboardClientContextComponent: React.FC<DashboardClientContext> = ({
             <button className="absolute bottom-2 left-2 w-14 h-14 rounded-md btn btn-primary flex flex-row items-center justify-center">
                 <SlashSquareIcon/>
             </button>
-            <a href={url} className="absolute bottom-2 right-2 w-14 h-14 rounded-md btn btn-primary flex flex-row items-center justify-center">
+            <a href={`${url}\\blackat\\`} className="absolute bottom-2 right-2 w-14 h-14 rounded-md btn btn-primary flex flex-row items-center justify-center">
                 <CatIcon/>
             </a>
         </div>

@@ -14,7 +14,7 @@ const Client : React.FC<ClientInterface> = ({clientId, context, endpoints}) => {
             <div className="flex flex-col items-center justify-center gap-y-5">
                 {
                     endpoints.map((e,i)=>(
-                        <Endpoint method={e.method} name={e.name} url={context.url+e.url} key={i}/>
+                        <Endpoint method={e.method} name={e.name} url={context.url+e.url} key={i} parameters={e.parameters}/>
                     ))
                 }
             </div>

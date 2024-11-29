@@ -9,8 +9,10 @@ const EndpointsPage = () => {
 
     const getClientDetails = async () => {
         const response  = await fetch("http://localhost:6782/dashboard/clients")
-
+        
         const clientDetailsJson  : ClientInterface[] = await response.json();
+
+
         
 
         setClientDetails(clientDetailsJson);
