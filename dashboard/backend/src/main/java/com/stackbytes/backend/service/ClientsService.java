@@ -17,6 +17,8 @@ public class ClientsService {
 
     private final ServiceRegistry serviceRegistry;
 
+
+
     @Autowired
     public ClientsService(ServiceRegistry serviceRegistry) {
         this.serviceRegistry = serviceRegistry;

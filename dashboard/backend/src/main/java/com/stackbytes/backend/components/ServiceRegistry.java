@@ -20,6 +20,7 @@ public class ServiceRegistry {
 
     private final RestTemplate restTemplate;
 
+
     public ServiceRegistry(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
