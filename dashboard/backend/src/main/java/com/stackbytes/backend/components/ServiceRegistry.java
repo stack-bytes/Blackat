@@ -88,6 +88,15 @@ public class ServiceRegistry {
         }
     }
 
+    public boolean evictById(String clientId){
+        if(registeredClients.get(clientId) != null){
+            registeredClients.remove(clientId);
+            return true;
+        }
+
+        return false;
+    }
+
 
     public List<ClientContext> getClientContexts() {
 

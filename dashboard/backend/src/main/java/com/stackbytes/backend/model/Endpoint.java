@@ -15,4 +15,5 @@ public class Endpoint {
     private String name;
     private String url;
     private List<Param> parameters;
+    private String body;
 }

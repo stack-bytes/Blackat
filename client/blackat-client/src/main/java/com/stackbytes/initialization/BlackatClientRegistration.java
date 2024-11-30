@@ -10,6 +10,7 @@ import com.stackbytes.model.dto.RegisterClientContextResponseDto;
 import com.stackbytes.service.BlackatAlertLevel;
 import com.stackbytes.service.BlackatAlertSystem;
 import com.stackbytes.service.BlackatClientService;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -43,6 +44,8 @@ public class BlackatClientRegistration {
 
     @Value("${blackat.server.port}")
     private Integer dashboardPort;
+
+
 
 
 
@@ -120,5 +123,10 @@ public class BlackatClientRegistration {
         }
 
 
+    }
+
+    @PreDestroy
+    private void closeService(){
+        restTemplate.delete(String.format("http://%s:%d/clients/unregister?clientId=%s", dashboardConnectionString, dashboardPort, blackatClientVariables.getId()));
     }
 }

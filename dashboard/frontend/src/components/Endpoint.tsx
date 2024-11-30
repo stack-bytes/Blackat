@@ -33,16 +33,14 @@ const Endpoint : React.FC<EndpointInterface> = ({
 
     const sendRequest = async ()  => {
         let tempHistory = recentHistory;
-        if(tempHistory == null){
             tempHistory = {
                 url: "",
-                status: -1,
+                status: "",
                 response: "",
                 timing: -1,
                 method: method
             }
-        }
-        let idx = 0;
+       let idx = 0;
        for(const key in parametersValues){
         if(idx == 0)
             url+=`?`

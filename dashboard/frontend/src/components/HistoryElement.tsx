@@ -36,7 +36,7 @@ const HistoryElement : React.FC<HistoryElementArgsInterface> = ({
                     {url}
                 </h1>
                 <div className="flex flex-row gap-x-4">
-                    <div className="badge badge-primary p-2">{timing*1000} ms</div>
+                    <div className="badge badge-primary p-2">{timing} ms</div>
                     <div className={`badge ${getStatusColor(status)}`}>{status}</div>
                 </div>
                    

@@ -4,6 +4,7 @@ import com.stackbytes.config.BlackatClientVariables;
 import com.stackbytes.model.BlackatContext;
 import com.stackbytes.model.BlackatEndpoint;
 import com.stackbytes.model.Param;
+import jakarta.annotation.PreDestroy;
 import jakarta.websocket.Endpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -98,6 +100,9 @@ public class BlackatClientService {
 
 
             List<Param> params = Arrays.stream(handlerMethod.getMethod().getParameters())
+                    .filter(p -> Arrays.stream(p.getAnnotations())
+                            .noneMatch(a -> a.annotationType().equals(RequestBody.class))
+                    )
                     .map(p -> new Param(p.getName(), p.getType().getSimpleName()))
                     .toList();
 
@@ -125,4 +130,5 @@ public class BlackatClientService {
         return endpoints;
 
     }
+
 }

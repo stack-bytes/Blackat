@@ -7,6 +7,7 @@ import com.stackbytes.backend.model.Endpoint;
 import com.stackbytes.backend.model.dto.RegisterClientContextRequestDto;
 import com.stackbytes.backend.model.dto.RegisterClientContextResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.UnknownHostException;
@@ -48,5 +49,10 @@ public class ClientsService {
 
     public List<Client> getClients() {
         return serviceRegistry.getAllClients();
+    }
+
+    public boolean unregisterClient(String clientId) {
+        System.out.println("Unregistering client with id: " + clientId);
+        return serviceRegistry.evictById(clientId);
     }
 }

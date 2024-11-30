@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/clients")
 public class ClientsController {
-
+    //TODO:Get request param name is provided in annotation
     private final ClientsService clientsService;
 
     @Autowired
@@ -33,6 +33,12 @@ public class ClientsController {
     @PostMapping("context")
     public ResponseEntity<Boolean> addClientContext(@RequestParam String clientId, @RequestBody List<Endpoint> endpoints) throws UnknownHostException {
         return ResponseEntity.ok(clientsService.addMethodsToClient(clientId, endpoints));
+    }
+
+    @CrossOrigin
+    @DeleteMapping("unregister")
+    public ResponseEntity<Boolean> unregisterClientContext(@RequestParam String clientId) throws UnknownHostException {
+        return ResponseEntity.ok(clientsService.unregisterClient(clientId));
     }
 
 }
