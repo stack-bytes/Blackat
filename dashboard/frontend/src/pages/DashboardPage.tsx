@@ -31,6 +31,7 @@ const DashboardPage: React.FC = () => {
 
         const clientContexts : DashboardClientContext[] = await response.json();
         
+        
 
         setDashboardClientContexts(clientContexts)
 

@@ -1,4 +1,7 @@
+import { LucideCircleDotDashed, MoreHorizontal, ScrollText } from "lucide-react";
 import { LegacyRef, MutableRefObject, RefObject, useRef, useEffect, useState, ChangeEvent } from "react"
+import HistoryElement, { HistoryElementArgsInterface } from "./HistoryElement";
+import ColoredMethod from "./ColoredMethod";
 
 export interface EndpointInterface {
     method: string,
@@ -12,13 +15,6 @@ export interface ParamInterface{
     type: String,
 }
 
-const methodColorsDictionary : {[key:string]:string} = {
-    "GET":"text-success",
-    "POST":"text-error",
-    "PUT":"text-yellow-500",
-    "PATCH":"text-purple-500",
-    "OPTIONS":"text-indigo-500"
-}
 
 
 const Endpoint : React.FC<EndpointInterface> = ({
@@ -31,11 +27,21 @@ const Endpoint : React.FC<EndpointInterface> = ({
     const inputRef = useRef (null);
 
     const [parametersValues, setParametersValues] = useState<any>(null);
-
+    const [collapsed, setCollapsed] = useState<boolean>(true);
+    const [recentHistory, setRecentHistory] = useState<HistoryElementArgsInterface | null>(null)
 
 
     const sendRequest = async ()  => {
-
+        let tempHistory = recentHistory;
+        if(tempHistory == null){
+            tempHistory = {
+                url: "",
+                status: -1,
+                response: "",
+                timing: -1,
+                method: method
+            }
+        }
         let idx = 0;
        for(const key in parametersValues){
         if(idx == 0)
@@ -45,25 +51,38 @@ const Endpoint : React.FC<EndpointInterface> = ({
         url+=`${key}=${parametersValues[key]}`
         idx+=1;
        }
+       tempHistory.url=url;
 
-       alert(url);
+        const startTime = Date.now();
 
         const result = await fetch(url, {
             method: method
         })
+
+        const endTime = Date.now();
+
+        tempHistory.status = result.status;
+        tempHistory.timing = endTime - startTime;
+
+        let resultContentType : String  | null = result.headers.get("content-type")
         let mess;
-        try{
+
+        if(resultContentType?.includes("application/json")){
            mess = await result.json();
-        } catch (e) {
-            mess = {}
+        } else {
+            mess = await result.text();
         }
 
+        tempHistory.response = mess;
+       
 
-        console.log(mess)
+        setRecentHistory(tempHistory);
+
+
         
 
-        alert(mess?.value);
-        return result;
+        console.log(mess)
+        return mess;
     }
 
     //Define types for consistency
@@ -83,16 +102,20 @@ const Endpoint : React.FC<EndpointInterface> = ({
 
     return(
         <>
-        <div tabIndex={0} className=" bg-neutral-800 collapse-arrow w-full h-auto">
-            <div className="collapse-title text-xl  font-medium flex flex-row items-center justify-between pl-5">
+        <div className=" bg-neutral-800 collapse-arrow w-full h-auto rounded-lg p-4 flex flex-col gap-y-3">
+            <div className="text-xl  font-medium flex flex-row items-center justify-between">
                 <h1 className="text-pur">{name}</h1>
-                <h1 className={`${methodColorsDictionary[method] || "text-neutral-600"}`}>{method || "*"}</h1>
+                <div className="flex flex-row w-auto h-auto gap-x-5">
+                    <ColoredMethod method={method}/>
+                    <button onClick={()=>setCollapsed(!collapsed)}><MoreHorizontal/></button>
+                </div>
+
             </div>
-            <div className="">
+            <div className={`${collapsed ? "hidden":"show"} flex flex-col  gap-y-3`}>
                 <a className="text-xl font-semibold text-accent" href={url} target="_blank">{url}</a>
                 {
                     parameters.length > 0 ?
-                    <div className="w-auto h-auto p-4 bg-neutral-900 gap-y-4 flex flex-col mt-4 rounded-md">
+                    <div className="w-auto h-auto p-4 bg-neutral-900 gap-y-4 flex flex-col mt-4 rounded-md mb-3">
                         {
                               parameters.map((p)=>(
                                 <div className="flex flex-row gap-x-4">
@@ -106,10 +129,24 @@ const Endpoint : React.FC<EndpointInterface> = ({
                     </div>
                     :<></>
                 }
+            
+            <div className="flex flex-col w-full h-auto p-1 justify-center items-center">
+                <h1 className="text-2xl flex flex-row gap-x-3 items-center justify-center">History  <ScrollText/></h1>
+                <div className="divider"/>
+                {
+                    recentHistory ?
+                    <HistoryElement method={recentHistory.method} response={recentHistory.response} status={recentHistory.status} timing={recentHistory.timing} url={recentHistory.url}/>
+                    :
+                    <h1 className="flex flex-row gap-x-3 font-medium">No last request to be shown</h1>
+                }
+
             </div>
-            <button className="btn btn-primary rounded-tl-none rounded-tr-none text-xl font-bold transition-none no-animation"
+               
+                <button className="mt-5 btn btn-primary rounded-lg text-xl font-bold transition-none no-animation"
             onClick={()=>sendRequest()}
             >Send</button>
+            </div>
+            
         </div>
         </>
     )
