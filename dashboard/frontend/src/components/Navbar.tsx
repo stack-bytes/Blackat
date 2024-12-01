@@ -54,7 +54,7 @@ const Navbar = () => {
                         </li>
                         <div className="w-1 h-6 bg-primary rounded-full" />
                         <li>
-                            <a className="btn  btn-primary text-2xl font-semibold flex flex-row items-center justify-center gap-x-2">
+                            <a className="btn  btn-primary text-2xl font-semibold flex flex-row items-center justify-center gap-x-2" href="https://github.com/stack-bytes" target="_blank">
                                 <Github />
                             </a>
                         </li>
