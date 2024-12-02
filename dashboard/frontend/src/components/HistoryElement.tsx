@@ -1,5 +1,6 @@
 import ColoredMethod from "./ColoredMethod";
 
+import { useStore, RequestesNumberType } from "../pages/DashboardPage";
 
 export interface HistoryElementArgsInterface{
     url: string,
@@ -11,8 +12,10 @@ export interface HistoryElementArgsInterface{
 
 const getStatusColor = (status: string) => {
     let statusNumber = Number(status); 
-    if(statusNumber >= 200 && statusNumber < 300)
+    if(statusNumber >= 200 && statusNumber < 300){
+
         return "badge-success";
+    }
     if(statusNumber >= 300 && statusNumber < 400)
         return "badge-warning";
     if(statusNumber >= 400)

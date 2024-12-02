@@ -1,5 +1,7 @@
 package com.stackbytes.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stackbytes.config.BlackatClientVariables;
 import com.stackbytes.model.BlackatContext;
 import com.stackbytes.model.BlackatEndpoint;
@@ -27,19 +29,21 @@ import java.util.prefs.BackingStoreException;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON) //Explicit singleton instancing
-public class BlackatClientService {
+public class BlackatClientService <T>{
 
     private final ApplicationContext applicationContext;
     private final BlackatAlertSystem alertSystem;
     private final BlackatClientVariables blackatClientVariables;
+    private final ObjectMapper objectMapper;
 
 
 
     @Autowired
-    BlackatClientService(ApplicationContext applicationContext, ServletWebServerApplicationContext servletWebServerApplicationContext, BlackatAlertSystem alertSystem, Environment environment, BlackatClientVariables blackatClientVariables) {
+    BlackatClientService(ApplicationContext applicationContext, ServletWebServerApplicationContext servletWebServerApplicationContext, BlackatAlertSystem alertSystem, Environment environment, BlackatClientVariables blackatClientVariables, ObjectMapper objectMapper) {
         this.applicationContext =  applicationContext;
         this.alertSystem = alertSystem;
         this.blackatClientVariables = blackatClientVariables;
+        this.objectMapper = objectMapper;
     }
 
 
@@ -89,9 +93,10 @@ public class BlackatClientService {
         List<BlackatEndpoint> endpoints = new ArrayList<>();
         RequestMappingHandlerMapping requestMappingHandlerMapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = requestMappingHandlerMapping.getHandlerMethods();
-
+        
 
         for(Map.Entry<RequestMappingInfo, HandlerMethod> entry : handlerMethods.entrySet()){
+
 
             RequestMappingInfo requestMappingInfo = entry.getKey();
             HandlerMethod handlerMethod = entry.getValue();
@@ -105,6 +110,18 @@ public class BlackatClientService {
                     )
                     .map(p -> new Param(p.getName(), p.getType().getSimpleName()))
                     .toList();
+
+            //TODO: Create json parsing to frontend
+            List<String> bodies = Arrays.stream(handlerMethod.getMethod().getParameterTypes())
+                    .filter(p->Arrays.stream(p.getAnnotations())
+                            .allMatch(a->a.annotationType().equals(RequestBody.class)
+                            )).map(a-> {
+                        try {
+                            return objectMapper.writeValueAsString(a.getClass());
+                        } catch (JsonProcessingException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).toList();
 
 
 

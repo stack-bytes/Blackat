@@ -2,6 +2,7 @@ import { LucideCircleDotDashed, MoreHorizontal, ScrollText } from "lucide-react"
 import { LegacyRef, MutableRefObject, RefObject, useRef, useEffect, useState, ChangeEvent } from "react"
 import HistoryElement, { HistoryElementArgsInterface } from "./HistoryElement";
 import ColoredMethod from "./ColoredMethod";
+import RequestBody from "./RequestBody";
 
 export interface EndpointInterface {
     method: string,
@@ -29,6 +30,7 @@ const Endpoint : React.FC<EndpointInterface> = ({
     const [parametersValues, setParametersValues] = useState<any>(null);
     const [collapsed, setCollapsed] = useState<boolean>(true);
     const [recentHistory, setRecentHistory] = useState<HistoryElementArgsInterface | null>(null)
+    const [requestBody, setRequestBody] = useState<String>("");
 
 
     const sendRequest = async ()  => {
@@ -54,12 +56,17 @@ const Endpoint : React.FC<EndpointInterface> = ({
         const startTime = Date.now();
 
         const result = await fetch(url, {
-            method: method
+            method: method,
+            headers: {
+                "Content-Type": "application/json" //TODO: Changeable
+            },
+            body: JSON.stringify(requestBody)    
         })
+
 
         const endTime = Date.now();
 
-        tempHistory.status = result.status;
+        tempHistory.status = result.status.toString();   
         tempHistory.timing = endTime - startTime;
 
         let resultContentType : String  | null = result.headers.get("content-type")
@@ -72,10 +79,8 @@ const Endpoint : React.FC<EndpointInterface> = ({
         }
 
         tempHistory.response = mess;
-       
 
         setRecentHistory(tempHistory);
-
 
         
 
@@ -127,7 +132,9 @@ const Endpoint : React.FC<EndpointInterface> = ({
                     </div>
                     :<></>
                 }
-            
+               <textarea className="w-full h-auto min-h-20 rounded-md bg-neutral-900 p-2"  placeholder="Enter request body here!" onChange={(e)=>{setRequestBody(e.target.value)}}>
+
+                </textarea>
             <div className="flex flex-col w-full h-auto p-1 justify-center items-center">
                 <h1 className="text-2xl flex flex-row gap-x-3 items-center justify-center">History  <ScrollText/></h1>
                 <div className="divider"/>
@@ -139,6 +146,8 @@ const Endpoint : React.FC<EndpointInterface> = ({
                 }
 
             </div>
+
+            
                
                 <button className="mt-5 btn btn-primary rounded-lg text-xl font-bold transition-none no-animation"
             onClick={()=>sendRequest()}

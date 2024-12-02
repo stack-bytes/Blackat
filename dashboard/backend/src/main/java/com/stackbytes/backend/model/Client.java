@@ -14,4 +14,5 @@ public class Client {
     private String clientId;
     private ClientContext context;
     private List<Endpoint> endpoints;
+    private String requestBody;
 }
