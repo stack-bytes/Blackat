@@ -2,12 +2,11 @@ package com.stackbytes.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stackbytes.annotations.BlackatOmmitEndpoint;
 import com.stackbytes.config.BlackatClientVariables;
 import com.stackbytes.model.BlackatContext;
 import com.stackbytes.model.BlackatEndpoint;
 import com.stackbytes.model.Param;
-import jakarta.annotation.PreDestroy;
-import jakarta.websocket.Endpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -21,15 +20,13 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import java.lang.reflect.Parameter;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.util.prefs.BackingStoreException;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON) //Explicit singleton instancing
-public class BlackatClientService <T>{
+public class BlackatClientService{
 
     private final ApplicationContext applicationContext;
     private final BlackatAlertSystem alertSystem;
@@ -70,7 +67,7 @@ public class BlackatClientService <T>{
         return blackatContext;
     }
 
-    // TODO: Report to monitoring system!
+
 
     private String getHostOrFallback(){
         try{
@@ -102,6 +99,12 @@ public class BlackatClientService <T>{
             HandlerMethod handlerMethod = entry.getValue();
 
             String name = handlerMethod.getMethod().getName();
+
+            BlackatOmmitEndpoint blackatOmmitEndpoint = handlerMethod.getMethodAnnotation(BlackatOmmitEndpoint.class);
+            System.out.println(blackatOmmitEndpoint + " " + name);
+            if(blackatOmmitEndpoint != null){
+                continue;
+            }
 
 
             List<Param> params = Arrays.stream(handlerMethod.getMethod().getParameters())

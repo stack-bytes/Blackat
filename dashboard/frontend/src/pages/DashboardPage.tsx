@@ -53,7 +53,7 @@ const DashboardPage: React.FC = () => {
     
     return (
         <DefaultLayout>
-            <div className="w-full h-auto flex flex-col items-start gap-x-10 bg-neutral-900 rounded-lg p-3 mb-5">
+            <div className="w-full h-auto flex flex-row items-start gap-x-5 bg-neutral-900 rounded-lg p-3 mb-5">
                 {
                     dashboardClientContexts.length > 0 ? 
                     dashboardClientContexts.map((c, k) => (

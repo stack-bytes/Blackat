@@ -55,13 +55,17 @@ const Endpoint : React.FC<EndpointInterface> = ({
 
         const startTime = Date.now();
 
-        const result = await fetch(url, {
+
+        const reqEntity =  {
             method: method,
             headers: {
                 "Content-Type": "application/json" //TODO: Changeable
-            },
-            body: JSON.stringify(requestBody)    
-        })
+            }, 
+        }
+
+        if(method != 'GET')
+            reqEntity.body = JSON.stringify(requestBody)   
+        const result = await fetch(url)
 
 
         const endTime = Date.now();

@@ -8,14 +8,23 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="blackat-client" />
-        <module name="spring-boot-mock" />
         <module name="backend" />
       </profile>
+      <profile name="Annotation profile for spring-boot-mock" enabled="true">
+        <sourceOutputDir name="../../../spring-boot-mock/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../../../spring-boot-mock/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="spring-boot-mock" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="blackat-dep-test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="backend" options="-parameters" />
+      <module name="blackat-dep-test" options="-parameters" />
       <module name="spring-boot-mock" options="-parameters" />
     </option>
   </component>
